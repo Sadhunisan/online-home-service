@@ -152,7 +152,7 @@ header.site{
   position:relative;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.045));
   color:#fff;border:1px solid rgba(255,255,255,.15);border-radius:28px;padding:28px;
   box-shadow:var(--shadow);backdrop-filter:blur(22px);
-  transform:rotate(1.5deg);opacity:0;animation:ticketIn .85s cubic-bezier(.2,.7,.3,1) .5s forwards
+  opacity:0;animation:ticketIn .85s cubic-bezier(.2,.7,.3,1) .5s forwards
 }
 .ticket:before{
   content:"";position:absolute;inset:-1px;border-radius:28px;padding:1px;
@@ -165,7 +165,7 @@ header.site{
   content:"";position:absolute;width:140px;height:140px;border-radius:50%;
   right:-55px;top:-55px;background:rgba(0,212,255,.13);filter:blur(2px)
 }
-@keyframes ticketIn{from{opacity:0;transform:rotate(1.5deg) translateY(30px) scale(.96)}to{opacity:1;transform:rotate(1.5deg) translateY(0) scale(1)}}
+@keyframes ticketIn{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
 .ticket-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px dashed rgba(255,255,255,.14);padding-bottom:16px;margin-bottom:10px}
 .ticket-head .tag{font-size:10px;font-weight:800;letter-spacing:.6px;color:#052119;background:#20d39b;padding:6px 10px;border-radius:99px}
 .ticket-head .id{font-size:12px;color:#8495ad;font-family:'Zilla Slab',serif}
@@ -338,6 +338,25 @@ footer{background:#050d19;color:#b5c2d3;padding:65px 0 28px;border-top:1px solid
   background:linear-gradient(145deg,#142541,#0b172a);color:#fff;border:1px solid var(--line);
   border-radius:22px;max-width:480px;width:100%;padding:32px;position:relative;box-shadow:var(--shadow);animation:ticketIn .35s ease forwards
 }
+#authOverlay .modal{
+  max-width:520px;
+  width:min(90vw, 520px);
+  padding:34px 32px 28px;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(10,17,30,0.88), rgba(8,16,28,0.74));
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 32px 80px rgba(0,0,0,.42);
+}
+#authOverlay .modal h3{
+  font-size:22px;
+  margin:0 0 8px;
+  letter-spacing:-.02em;
+}
+#authOverlay .modal p{
+  margin:0 0 20px;
+  color:#9caec3;
+  font-size:13px;
+}
 .modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.06);border:1px solid var(--line);width:34px;height:34px;border-radius:10px;font-size:17px;color:#a9b8cc}
 .modal h3{font-size:23px;margin-bottom:7px}.modal p{font-size:13px;color:#95a5bb;margin-bottom:20px}
 .user-chip{
@@ -349,12 +368,21 @@ footer{background:#050d19;color:#b5c2d3;padding:65px 0 28px;border-top:1px solid
 .auth-tabs{display:flex;gap:6px;margin-bottom:20px;background:rgba(255,255,255,.06);padding:4px;border-radius:12px}
 .auth-tabs button{flex:1;padding:10px;border:none;background:none;border-radius:9px;font-weight:700;font-size:13px;color:#8191a8}
 .auth-tabs button.active{background:rgba(255,255,255,.1);color:#fff}
-.auth-form{display:flex;flex-direction:column;gap:14px}.auth-form label{font-size:11.5px;font-weight:700;color:#93a2b7;margin-bottom:5px;display:block}
+.auth-form{display:flex;flex-direction:column;gap:16px}.auth-form label{font-size:11.5px;font-weight:700;color:#93a2b7;margin-bottom:5px;display:block}
 .auth-form input,.auth-form select{
-  width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:13px;
-  background:rgba(255,255,255,.045);color:#fff;outline:none
+  width:100%;height:52px;padding:14px 16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;font-family:inherit;font-size:14px;
+  background:rgba(255,255,255,.05);color:#fff;outline:none
 }
-.auth-form select option{background:#10203a;color:#fff}.auth-form input:focus,.auth-form select:focus{border-color:rgba(0,212,255,.6)}
+.auth-form select option{background:#10203a;color:#fff}.auth-form input:focus,.auth-form select:focus{border-color:rgba(0,212,255,.6);box-shadow:0 0 0 3px rgba(0,212,255,.08)}
+#authOverlay .btn.btn-brass,
+#authOverlay .auth-form button[type="submit"]{
+  width:100%;
+  justify-content:center;
+  min-height:54px;
+  font-size:16px;
+  border-radius:14px;
+  margin-top:6px;
+}
 .auth-error{background:rgba(255,76,96,.1);color:#ff9daa;border:1px solid rgba(255,76,96,.3);padding:10px 12px;border-radius:10px;font-size:12.5px;display:none}
 .auth-error.show{display:block}.auth-form .role-toggle{display:flex;gap:9px}
 .auth-form .role-toggle label{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:12px;cursor:pointer;font-weight:700;color:#93a2b7}
@@ -1036,6 +1064,9 @@ footer{background:#050d19;color:#b5c2d3;padding:65px 0 28px;border-top:1px solid
     registerForm.style.display = isLogin ? 'none' : 'flex';
     document.getElementById('authTitle').textContent = isLogin ? 'Welcome back' : 'Create your account';
     authError.classList.remove('show');
+  }
+  if (!Auth.isLoggedIn()) {
+    setTimeout(() => openAuth('login'), 150);
   }
   tabLogin.addEventListener('click', () => setAuthTab('login'));
   tabRegister.addEventListener('click', () => setAuthTab('register'));
